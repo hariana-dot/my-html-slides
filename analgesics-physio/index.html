@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analgesics for Physiotherapists</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    .reveal { font-family: 'Inter', system-ui, sans-serif; }
+    .reveal h1 { font-size: 2.5em; font-weight: 700; color: #0a2463; }
+    .reveal h2 { font-size: 1.6em; font-weight: 600; color: #0a2463; }
+    .reveal h3 { font-size: 1.2em; font-weight: 600; color: #1e3a76; }
+    .reveal li { font-size: 0.85em; line-height: 1.5; }
+    .reveal p { font-size: 0.8em; line-height: 1.5; }
+
+    .tag { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.65em; font-weight: 600; margin: 2px; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-purple { background: #f3e8ff; color: #6b21a8; }
+
+    .flex-row { display: flex; gap: 20px; align-items: stretch; }
+    .flex-col { flex: 1; }
+    .card { background: #f8fafc; border-radius: 12px; padding: 16px; border: 1px solid #e2e8f0; height: 100%; }
+    .card h4 { margin: 0 0 8px 0; font-size: 0.9em; }
+    .card ul { margin: 0; padding-left: 16px; }
+    .card li { font-size: 0.75em; margin: 4px 0; }
+
+    .pros-cons { display: flex; gap: 12px; }
+    .pros, .cons { flex: 1; border-radius: 10px; padding: 12px; }
+    .pros { background: #dcfce7; border: 1px solid #86efac; }
+    .cons { background: #fee2e2; border: 1px solid #fca5a5; }
+    .pros h4, .cons h4 { margin: 0 0 6px 0; font-size: 0.8em; }
+    .pros li, .cons li { font-size: 0.7em; }
+
+    .mechanism-svg { width: 100%; max-width: 700px; margin: 0 auto; display: block; }
+
+    .chart-container { height: 380px; width: 100%; margin: 0 auto; }
+
+    .flowchart { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.7em; }
+    .flow-node { padding: 10px 20px; border-radius: 10px; font-weight: 600; text-align: center; min-width: 160px; }
+    .flow-arrow { font-size: 1.2em; color: #64748b; }
+
+    .title-gradient { background: linear-gradient(135deg, #0a2463, #1e3a76, #3b5998); color: white; padding: 20px 40px; border-radius: 16px; }
+    .title-gradient h1, .title-gradient h2, .title-gradient p { color: white; }
+
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.65em; }
+    .comparison-table th { background: #0a2463; color: white; padding: 8px 10px; text-align: center; font-weight: 600; }
+    .comparison-table td { padding: 7px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; }
+    .comparison-table tr:nth-child(even) { background: #f8fafc; }
+    .comparison-table tr:hover { background: #e0f2fe; }
+    .check { color: #16a34a; font-weight: bold; }
+    .cross { color: #dc2626; }
+    .warn { color: #d97706; }
+
+    .takeaway { background: #fff7ed; border-left: 5px solid #f97316; padding: 14px 18px; border-radius: 8px; margin: 10px 0; }
+    .takeaway p { margin: 0; font-size: 0.8em; }
+
+    .section-badge { display: inline-block; padding: 4px 16px; border-radius: 20px; font-size: 0.6em; font-weight: 600; margin-bottom: 10px; }
+    .badge-physio { background: #0a2463; color: white; }
+    .badge-nsaids { background: #ef4444; color: white; }
+    .badge-opioid { background: #f59e0b; color: white; }
+    .badge-adjuvant { background: #8b5cf6; color: white; }
+    .badge-topical { background: #06b6d4; color: white; }
+    .badge-paracet { background: #84cc16; color: white; }
+
+    .pain-ladder { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .ladder-step { width: 160px; padding: 10px; border-radius: 8px; color: white; font-weight: 600; font-size: 0.75em; text-align: center; }
+    .ladder-arrow { color: #94a3b8; font-size: 1em; }
+
+    @media (max-width: 768px) {
+      .flex-row { flex-direction: column; }
+      .pros-cons { flex-direction: column; }
+      .reveal h1 { font-size: 1.6em; }
+      .reveal h2 { font-size: 1.2em; }
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ===== SLIDE 1: TITLE ===== -->
+<section>
+  <div class="title-gradient">
+    <h1>💊 Analgesics for<br>Physiotherapists</h1>
+    <p style="margin-top:16px;opacity:0.9;">A practical comparison of pain medication categories<br>to guide clinical reasoning in musculoskeletal care</p>
+  </div>
+  <p style="margin-top:20px;color:#64748b;font-size:0.7em;">Interactive Deck · Evidence-Based · Physio-Focused</p>
+</section>
+
+<!-- ===== SLIDE 2: WHY PHYSIOS NEED TO KNOW ===== -->
+<section>
+  <h2>Why Physiotherapists Need to Know</h2>
+  <div class="flex-row" style="margin-top:20px;">
+    <div class="card flex-col">
+      <h4>🩺 Clinical Reality</h4>
+      <ul>
+        <li>Most MSK patients are already on analgesics when they see you</li>
+        <li>Understanding their meds helps you interpret pain responses</li>
+        <li>You can identify red flags (e.g. opioid misuse, NSAID contraindications)</li>
+      </ul>
+    </div>
+    <div class="card flex-col">
+      <h4>🤝 Interprofessional Communication</h4>
+      <ul>
+        <li>Speak the same language as GPs, pharmacists, and specialists</li>
+        <li>Better referrals → better patient outcomes</li>
+        <li>Know when to recommend escalation / de-escalation</li>
+      </ul>
+    </div>
+    <div class="card flex-col">
+      <h4>⚡ Treatment Timing</h4>
+      <ul>
+        <li>Schedule sessions relative to medication peak effect</li>
+        <li>Use "pain relief windows" for manual therapy / exercise</li>
+        <li>Avoid aggravating pain during medication troughs</li>
+      </ul>
+    </div>
+  </div>
+  <div class="takeaway">
+    <p><strong>Key point:</strong> Physios don't prescribe — but you work <em>around</em> and <em>with</em> these drugs every day.</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 3: PAIN TYPES & WHO LADDER ===== -->
+<section>
+  <section>
+    <h2>Pain Types & The WHO Ladder</h2>
+    <div class="flex-row" style="margin-top:15px;">
+      <div class="flex-col" style="flex:1.2;">
+        <h3>Nociceptive vs Neuropathic</h3>
+        <table class="comparison-table">
+          <tr><th></th><th>Nociceptive</th><th>Neuropathic</th></tr>
+          <tr><td><strong>Cause</strong></td><td>Tissue damage / inflammation</td><td>Nerve injury / dysfunction</td></tr>
+          <tr><td><strong>Quality</strong></td><td>Aching, throbbing, sharp</td><td>Burning, shooting, electric</td></tr>
+          <tr><td><strong>Responds to</strong></td><td>NSAIDs, paracetamol, opioids</td><td>Gabapentinoids, TCAs, SNRIs</td></tr>
+          <tr><td><strong>Physio example</strong></td><td>Acute ankle sprain, OA knee</td><td>Sciatica, diabetic neuropathy, CRPS</td></tr>
+        </table>
+      </div>
+      <div class="flex-col" style="flex:0.8;">
+        <h3>WHO Pain Ladder</h3>
+        <div class="pain-ladder">
+          <div class="ladder-step" style="background:#dc2626;">Step 3: Strong opioid<br><span style="font-weight:400;font-size:0.85em;">morphine, fentanyl</span></div>
+          <div class="ladder-arrow">▼</div>
+          <div class="ladder-step" style="background:#f59e0b;">Step 2: Weak opioid ± non-opioid<br><span style="font-weight:400;font-size:0.85em;">codeine, tramadol</span></div>
+          <div class="ladder-arrow">▼</div>
+          <div class="ladder-step" style="background:#22c55e;">Step 1: Non-opioid ± adjuvant<br><span style="font-weight:400;font-size:0.85em;">NSAIDs, paracetamol, topical</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ===== SLIDE 4: NSAIDs ===== -->
+<section>
+  <h2><span class="badge-physio">NSAIDs</span> Non-Steroidal Anti-Inflammatory Drugs</h2>
+  <div class="flex-row" style="margin-top:12px;">
+    <div class="flex-col" style="flex:1;">
+      <div class="card">
+        <h4>⚙️ Mechanism</h4>
+        <p style="font-size:0.75em;">Block COX-1 & COX-2 enzymes → reduce prostaglandin synthesis → ↓ inflammation & pain</p>
+        <h4 style="margin-top:12px;">💊 Common Examples</h4>
+        <p><span class="tag tag-red">Ibuprofen</span> <span class="tag tag-red">Naproxen</span> <span class="tag tag-red">Diclofenac</span> <span class="tag tag-red">Celecoxib</span> <span class="tag tag-amber">Meloxicam</span></p>
+        <h4 style="margin-top:12px;">⏱ Onset / Duration</h4>
+        <p style="font-size:0.75em;">Onset 30–60 min · Peak 1–4 hrs · Duration 4–12 hrs (varies by drug)</p>
+      </div>
+    </div>
+    <div class="flex-col" style="flex:1.2;">
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>✅ Pros for Physio</h4>
+          <ul>
+            <li>Excellent for inflammatory MSK conditions</li>
+            <li>Reduces swelling → improves ROM access</li>
+            <li>Good pre-session for stiff OA patients</li>
+            <li>Widely available OTC (ibuprofen)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>⚠️ Cautions</h4>
+          <ul>
+            <li>GI bleeding risk (esp. long-term)</li>
+            <li>Renal impairment / dehydration risk</li>
+            <li>CV risk (COX-2 selective)</li>
+            <li>Asthma exacerbation in sensitive pts</li>
+            <li>Not for <em>neuropathic</em> pain</li>
+          </ul>
+        </div>
+      </div>
+      <div class="takeaway" style="margin-top:8px;">
+        <p><strong>Physio tip:</strong> Schedule hands-on work 1–2 hrs after NSAID intake for maximal anti-inflammatory effect. Warn patients about GI protection (take with food).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 5: PARACETAMOL ===== -->
+<section>
+  <h2><span class="badge-physio">Paracetamol</span> (Acetaminophen)</h2>
+  <div class="flex-row" style="margin-top:12px;">
+    <div class="flex-col" style="flex:1;">
+      <div class="card">
+        <h4>⚙️ Mechanism</h4>
+        <p style="font-size:0.75em;">Central COX inhibition (weak peripheral) · Also acts on cannabinoid & serotonin pathways · <strong>Not anti-inflammatory</strong></p>
+        <h4 style="margin-top:12px;">💊 Examples</h4>
+        <p><span class="tag tag-green">Paracetamol</span> <span class="tag tag-green">Panadol</span> <span class="tag tag-green">Tylenol</span></p>
+        <h4 style="margin-top:12px;">⏱ Onset / Duration</h4>
+        <p style="font-size:0.75em;">Onset 30–60 min · Peak 1–2 hrs · Duration 4–6 hrs</p>
+      </div>
+    </div>
+    <div class="flex-col" style="flex:1.2;">
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>✅ Pros for Physio</h4>
+          <ul>
+            <li>Safe GI profile (good for elderly)</li>
+            <li>No renal / CV effects</li>
+            <li>Safe in pregnancy & breastfeeding</li>
+            <li>Good baseline analgesia</li>
+            <li>No drug–drug interactions with NSAIDs</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>⚠️ Cautions</h4>
+          <ul>
+            <li>Liver toxicity > 4 g/day</li>
+            <li>Weak analgesic — often insufficient alone</li>
+            <li>No anti-inflammatory effect</li>
+            <li>Alcohol interaction risk</li>
+          </ul>
+        </div>
+      </div>
+      <div class="takeaway" style="margin-top:8px;">
+        <p><strong>Physio tip:</strong> Use as baseline pain relief for chronic pain patients. Combine with NSAIDs for additive effect without added GI risk. Monitor total daily intake.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 6: OPIOIDS ===== -->
+<section>
+  <h2><span class="badge-opioid">Opioids</span></h2>
+  <div class="flex-row" style="margin-top:12px;">
+    <div class="flex-col" style="flex:1;">
+      <div class="card">
+        <h4>⚙️ Mechanism</h4>
+        <p style="font-size:0.75em;">Agonists at μ-opioid receptors in CNS & periphery → ↓ pain signal transmission, ↑ pain threshold, ↑ euphoria</p>
+        <h4 style="margin-top:12px;">💊 Examples</h4>
+        <p><span class="tag tag-amber">Codeine</span> <span class="tag tag-amber">Tramadol</span> <span class="tag tag-red">Morphine</span> <span class="tag tag-red">Oxycodone</span> <span class="tag tag-red">Fentanyl</span></p>
+        <h4 style="margin-top:12px;">⏱ Onset / Duration</h4>
+        <p style="font-size:0.75em;">Variable: immediate-release (30 min) vs extended-release (hours)</p>
+      </div>
+    </div>
+    <div class="flex-col" style="flex:1.2;">
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>✅ Pros for Physio</h4>
+          <ul>
+            <li>Powerful — effective for severe acute pain</li>
+            <li>Post-surgical / trauma rehab facilitation</li>
+            <li>Multiple formulations (oral, patch, injection)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>⚠️ Major Cautions</h4>
+          <ul>
+            <li>Dependence & addiction risk ⚠️</li>
+            <li>Respiratory depression (high dose)</li>
+            <li>Constipation (common, dose-limiting)</li>
+            <li>Sedation → fall risk in elderly</li>
+            <li>Hyperalgesia with prolonged use</li>
+            <li>Opioid crisis — prescribe sparingly</li>
+          </ul>
+        </div>
+      </div>
+      <div class="takeaway" style="margin-top:8px;">
+        <p><strong>Physio tip:</strong> Be aware of sedation during sessions. Use "pain relief windows" for active exercise. Never encourage abrupt cessation. Flag concerning usage patterns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 7: TOPICAL ANALGESICS ===== -->
+<section>
+  <h2><span class="badge-topical">Topical Analgesics</span></h2>
+  <div class="flex-row" style="margin-top:12px;">
+    <div class="flex-col" style="flex:1;">
+      <div class="card">
+        <h4>⚙️ Mechanism</h4>
+        <p style="font-size:0.75em;">Local action at skin / superficial tissues · Minimal systemic absorption · Fewer side effects than oral</p>
+        <h4 style="margin-top:12px;">💊 Types</h4>
+        <p><span class="tag tag-blue">NSAID gel</span> <span class="tag tag-blue">Capsaicin</span> <span class="tag tag-blue">Lidocaine</span> <span class="tag tag-blue">Menthol</span> <span class="tag tag-blue">Counter-irritants</span></p>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h4>Best For</h4>
+        <ul>
+          <li>Localised OA (knee, hand)</li>
+          <li>Muscle strains / tendinopathy</li>
+          <li>Patients who can't take oral NSAIDs</li>
+          <li>Neuropathic pain (lidocaine patch, capsaicin)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex-col" style="flex:1.2;">
+      <div class="chart-container">
+        <canvas id="topicalChart"></canvas>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;">
+        <div style="text-align:center;">
+          <p style="font-size:0.6em;margin:0;"><strong>NSAID gel</strong></p>
+          <p style="font-size:0.6em;margin:0;color:#16a34a;">Local inflammation ↓↓</p>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-size:0.6em;margin:0;"><strong>Capsaicin</strong></p>
+          <p style="font-size:0.6em;margin:0;color:#8b5cf6;">Neuropathic pain ↓↓</p>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-size:0.6em;margin:0;"><strong>Lidocaine</strong></p>
+          <p style="font-size:0.6em;margin:0;color:#06b6d4;">Numb → pain relief</p>
+        </div>
+      </div>
+      <div class="takeaway" style="margin-top:8px;">
+        <p><strong>Physio tip:</strong> Topical NSAIDs are first-line for knee OA (NICE guidelines). Apply gel 15–20 min before session and massage into target area.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 8: ADJUVANT ANALGESICS ===== -->
+<section>
+  <h2><span class="badge-adjuvant">Adjuvant Analgesics</span></h2>
+  <p style="font-size:0.75em;color:#64748b;">Drugs primarily for other conditions, but effective for pain — especially neuropathic</p>
+  <div class="flex-row" style="margin-top:10px;">
+    <div class="flex-col">
+      <div class="card">
+        <h4>Gabapentinoids</h4>
+        <p><span class="tag tag-purple">Gabapentin</span> <span class="tag tag-purple">Pregabalin</span></p>
+        <p style="font-size:0.7em;">↓ Calcium channel → ↓ neurotransmitter release</p>
+        <ul style="font-size:0.65em;">
+          <li>First-line for neuropathic pain</li>
+          <li>Also anxiety, sleep improvement</li>
+          <li>Dizziness & sedation common</li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex-col">
+      <div class="card">
+        <h4>Tricyclic Antidepressants (TCAs)</h4>
+        <p><span class="tag tag-purple">Amitriptyline</span> <span class="tag tag-purple">Nortriptyline</span></p>
+        <p style="font-size:0.7em;">↓ NE & 5-HT reuptake → modulate descending pain pathways</p>
+        <ul style="font-size:0.65em;">
+          <li>Low dose for pain (≠ depression dose)</li>
+          <li>Best for chronic tension / migraine</li>
+          <li>Anticholinergic: dry mouth, sedation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex-col">
+      <div class="card">
+        <h4>SNRIs</h4>
+        <p><span class="tag tag-purple">Duloxetine</span> <span class="tag tag-purple">Venlafaxine</span></p>
+        <p style="font-size:0.7em;">↑ 5-HT & NE → ↑ descending inhibition</p>
+        <ul style="font-size:0.65em;">
+          <li>Effective for OA & neuropathic pain</li>
+          <li>Also treats comorbid depression/anxiety</li>
+          <li>Withdrawal symptoms on cessation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="takeaway">
+    <p><strong>Physio tip:</strong> Adjuvants take 2–6 weeks for full effect. Patients may feel worse before better. Time your sessions for when side effects (dizziness, sedation) are minimal — often morning or early afternoon.</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 9: MECHANISM OF ACTION DIAGRAM ===== -->
+<section>
+  <h2>Mechanism of Action Overview</h2>
+  <p style="font-size:0.7em;color:#64748b;">How different analgesics target the pain pathway</p>
+  <div style="display:flex;justify-content:center;margin-top:10px;">
+    <svg viewBox="0 0 800 420" style="width:100%;max-width:800px;height:auto;" class="mechanism-svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#64748b"/></marker>
+        <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#dc2626"/></marker>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#f97316;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Pain source -->
+      <rect x="20" y="170" width="120" height="50" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="80" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#dc2626">Pain Source</text>
+
+      <!-- Tissue damage -->
+      <rect x="20" y="30" width="120" height="50" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+      <text x="80" y="58" text-anchor="middle" font-size="11" font-weight="500" fill="#991b1b">Tissue damage</text>
+
+      <!-- Nerve injury -->
+      <rect x="20" y="310" width="120" height="50" rx="10" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="1.5"/>
+      <text x="80" y="338" text-anchor="middle" font-size="11" font-weight="500" fill="#6b21a8">Nerve injury</text>
+
+      <line x1="80" y1="80" x2="80" y2="170" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+      <line x1="80" y1="360" x2="80" y2="220" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Prostaglandins -->
+      <rect x="200" y="140" width="130" height="50" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+      <text x="265" y="160" text-anchor="middle" font-size="11" font-weight="500" fill="#9a3412">Prostaglandins</text>
+      <text x="265" y="176" text-anchor="middle" font-size="9" fill="#9a3412">(inflammation)</text>
+      <line x1="140" y1="195" x2="200" y2="165" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+
+      <!-- NSAID block -->
+      <rect x="200" y="50" width="130" height="50" rx="10" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+      <text x="265" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="white">NSAIDs</text>
+      <text x="265" y="90" text-anchor="middle" font-size="9" fill="#fee2e2">Block COX → ↓ PG</text>
+      <line x1="265" y1="100" x2="265" y2="140" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+      <!-- Peripheral nerve -->
+      <rect x="400" y="150" width="140" height="50" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+      <text x="470" y="170" text-anchor="middle" font-size="11" font-weight="500" fill="#166534">Peripheral nerve</text>
+      <text x="470" y="186" text-anchor="middle" font-size="9" fill="#166534">(signal transmission)</text>
+      <line x1="330" y1="165" x2="400" y2="175" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Local anaesthetic -->
+      <rect x="400" y="50" width="140" height="50" rx="10" fill="#06b6d4" stroke="#0891b2" stroke-width="2"/>
+      <text x="470" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="white">Topical / Local</text>
+      <text x="470" y="90" text-anchor="middle" font-size="9" fill="#cffafe">Lidocaine block Na⁺</text>
+      <line x1="470" y1="100" x2="470" y2="150" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Spinal cord -->
+      <rect x="590" y="140" width="140" height="50" rx="10" fill="#fefce8" stroke="#fde047" stroke-width="1.5"/>
+      <text x="660" y="160" text-anchor="middle" font-size="11" font-weight="500" fill="#854d0e">Spinal cord</text>
+      <text x="660" y="176" text-anchor="middle" font-size="9" fill="#854d0e">(dorsal horn)</text>
+      <line x1="540" y1="175" x2="590" y2="165" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Opioids block here -->
+      <rect x="590" y="30" width="140" height="50" rx="10" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+      <text x="660" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="white">Opioids</text>
+      <text x="660" y="70" text-anchor="middle" font-size="9" fill="#fef3c7">μ-receptor agonist</text>
+      <line x1="660" y1="80" x2="660" y2="140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Brain -->
+      <rect x="590" y="270" width="140" height="50" rx="10" fill="#f0f0ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="660" y="290" text-anchor="middle" font-size="11" font-weight="500" fill="#4c1d95">Brain (CNS)</text>
+      <text x="660" y="306" text-anchor="middle" font-size="9" fill="#4c1d95">perception</text>
+      <line x1="660" y1="190" x2="660" y2="270" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Paracetamol -->
+      <rect x="590" y="190" width="140" height="50" rx="10" fill="#84cc16" stroke="#65a30d" stroke-width="2"/>
+      <text x="660" y="212" text-anchor="middle" font-size="13" font-weight="700" fill="white">Paracetamol</text>
+      <text x="660" y="230" text-anchor="middle" font-size="9" fill="#ecfccb">Central COX inhibition</text>
+
+      <!-- Adjuvants -->
+      <rect x="400" y="310" width="140" height="50" rx="10" fill="#8b5cf6" stroke="#7c3aed" stroke-width="2"/>
+      <text x="470" y="332" text-anchor="middle" font-size="13" font-weight="700" fill="white">Adjuvants</text>
+      <text x="470" y="350" text-anchor="middle" font-size="9" fill="#ede9fe">GABA · TCA · SNRI</text>
+      <line x1="470" y1="310" x2="470" y2="200" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+
+      <!-- Legend -->
+      <rect x="30" y="380" width="12" height="12" rx="3" fill="#dc2626"/>
+      <text x="48" y="392" font-size="10" fill="#475569">Blocks inflammation</text>
+      <rect x="180" y="380" width="12" height="12" rx="3" fill="#f59e0b"/>
+      <text x="198" y="392" font-size="10" fill="#475569">Blocks signal transmission</text>
+      <rect x="370" y="380" width="12" height="12" rx="3" fill="#8b5cf6"/>
+      <text x="388" y="392" font-size="10" fill="#475569">Modulates central perception</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== SLIDE 10: COMPARISON CHART ===== -->
+<section>
+  <h2>Head-to-Head Comparison</h2>
+  <p style="font-size:0.7em;color:#64748b;">Quick-reference — how the major categories stack up</p>
+  <div style="margin-top:10px;display:flex;gap:20px;">
+    <div style="flex:1.5;">
+      <table class="comparison-table">
+        <tr>
+          <th>Property</th>
+          <th>NSAIDs</th>
+          <th>Paracetamol</th>
+          <th>Opioids</th>
+          <th>Topical</th>
+          <th>Adjuvants</th>
+        </tr>
+        <tr>
+          <td><strong>Pain type</strong></td>
+          <td>Inflammatory</td>
+          <td>Mild–moderate</td>
+          <td>Moderate–severe</td>
+          <td>Localised</td>
+          <td>Neuropathic</td>
+        </tr>
+        <tr>
+          <td><strong>Anti-inflammatory</strong></td>
+          <td class="check">Strong</td>
+          <td class="cross">None</td>
+          <td class="cross">None</td>
+          <td class="check">Mild–mod</td>
+          <td class="cross">None</td>
+        </tr>
+        <tr>
+          <td><strong>GI safety</strong></td>
+          <td class="cross">⚠️</td>
+          <td class="check">✓</td>
+          <td class="warn">~ (constipation)</td>
+          <td class="check">✓✓</td>
+          <td class="check">✓</td>
+        </tr>
+        <tr>
+          <td><strong>Renal safety</strong></td>
+          <td class="cross">⚠️</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td class="check">✓✓</td>
+          <td class="check">✓</td>
+        </tr>
+        <tr>
+          <td><strong>Addiction risk</strong></td>
+          <td class="cross">No</td>
+          <td class="cross">No</td>
+          <td class="cross">High ⚠️</td>
+          <td class="cross">No</td>
+          <td class="warn">Low</td>
+        </tr>
+        <tr>
+          <td><strong>Sedation</strong></td>
+          <td class="cross">No</td>
+          <td class="cross">No</td>
+          <td class="cross">Yes ⚠️</td>
+          <td class="cross">No</td>
+          <td class="warn">Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Onset</strong></td>
+          <td>30–60 min</td>
+          <td>30–60 min</td>
+          <td>15–30 min (IR)</td>
+          <td>15–30 min</td>
+          <td>2–6 weeks</td>
+        </tr>
+        <tr>
+          <td><strong>Best physio use</strong></td>
+          <td>Pre-session for OA / tendinopathy</td>
+          <td>Baseline for chronic pain</td>
+          <td>Post-op / acute trauma rehab</td>
+          <td>Localised joint / muscle</td>
+          <td>CRPS / sciatica / fibromyalgia</td>
+        </tr>
+      </table>
+    </div>
+    <div style="flex:1;">
+      <div class="chart-container" style="height:340px;">
+        <canvas id="efficacyChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 11: EFFICACY BY CONDITION ===== -->
+<section>
+  <h2>Which Drug for Which Condition?</h2>
+  <p style="font-size:0.7em;color:#64748b;">Efficacy matrix — best choices for common physio presentations</p>
+  <div style="margin-top:15px;">
+    <table class="comparison-table" style="font-size:0.6em;">
+      <tr>
+        <th style="text-align:left;min-width:120px;">Condition</th>
+        <th>NSAIDs</th>
+        <th>Paracetamol</th>
+        <th>Opioid</th>
+        <th>Topical</th>
+        <th>Gabapentinoid</th>
+        <th>TCA</th>
+        <th>SNRI</th>
+      </tr>
+      <tr><td style="text-align:left;">Acute ankle sprain</td><td>★ ★ ★</td><td>★</td><td>★ ★</td><td>★ ★</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td style="text-align:left;">Knee OA</td><td>★ ★ ★</td><td>★ ★</td><td>★ ★</td><td>★ ★ ★</td><td>—</td><td>—</td><td>★ ★</td></tr>
+      <tr><td style="text-align:left;">Low back pain (acute)</td><td>★ ★ ★</td><td>★ ★</td><td>★ ★</td><td>★</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td style="text-align:left;">Low back pain (chronic)</td><td>★</td><td>★</td><td>—</td><td>—</td><td>★ ★</td><td>★ ★</td><td>★ ★</td></tr>
+      <tr><td style="text-align:left;">Sciatica / radiculopathy</td><td>★</td><td>★</td><td>★ ★</td><td>—</td><td>★ ★ ★</td><td>★ ★</td><td>★ ★</td></tr>
+      <tr><td style="text-align:left;">Rotator cuff tendinopathy</td><td>★ ★ ★</td><td>★</td><td>★</td><td>★ ★</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td style="text-align:left;">Fibromyalgia</td><td>—</td><td>—</td><td>—</td><td>—</td><td>★ ★</td><td>★ ★</td><td>★ ★ ★</td></tr>
+      <tr><td style="text-align:left;">CRPS</td><td>—</td><td>—</td><td>★</td><td>★ ★</td><td>★ ★ ★</td><td>★ ★</td><td>★ ★</td></tr>
+      <tr><td style="text-align:left;">Post-surgical rehab</td><td>★ ★</td><td>★ ★</td><td>★ ★ ★</td><td>★</td><td>★</td><td>—</td><td>—</td></tr>
+      <tr><td style="text-align:left;">Tension headache / migraine</td><td>★ ★</td><td>★ ★</td><td>—</td><td>—</td><td>—</td><td>★ ★ ★</td><td>★ ★</td></tr>
+    </table>
+    <p style="font-size:0.6em;color:#64748b;margin-top:6px;">★ ★ ★ = First-line · ★ ★ = Alternative · ★ = May consider · — = Not recommended</p>
+  </div>
+  <div class="takeaway" style="margin-top:10px;">
+    <p><strong>Clinical pearl:</strong> Match the drug class to the <em>pain mechanism</em>, not just the diagnosis. Inflammatory → NSAIDs · Neuropathic → Adjuvants · Nociceptive + inflammation → NSAIDs + Paracetamol.</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 12: CLINICAL DECISION FLOWCHART ===== -->
+<section>
+  <h2>Clinical Decision Flowchart</h2>
+  <p style="font-size:0.7em;color:#64748b;">How a physio might think about a patient's analgesia</p>
+  <div class="flowchart" style="margin-top:15px;">
+    <div class="flow-node" style="background:#0a2463;color:white;">Patient presents with pain</div>
+    <div class="flow-arrow">▼</div>
+    <div class="flex-row" style="gap:30px;">
+      <div class="flow-node" style="background:#dcfce7;color:#166534;border:2px solid #86efac;">Acute (&lt; 6 weeks)</div>
+      <div class="flow-node" style="background:#fef3c7;color:#92400e;border:2px solid #fde68a;">Subacute (6–12 weeks)</div>
+      <div class="flow-node" style="background:#fee2e2;color:#991b1b;border:2px solid #fca5a5;">Chronic (&gt; 12 weeks)</div>
+    </div>
+    <div class="flow-arrow">▼</div>
+    <div class="flex-row" style="gap:20px;">
+      <div style="text-align:center;font-size:0.65em;background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;">
+        <strong>Inflammatory?</strong><br>
+        → NSAIDs ± Paracetamol<br>
+        → Topical for localised
+      </div>
+      <div style="text-align:center;font-size:0.65em;background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;">
+        <strong>Mixed picture</strong><br>
+        → NSAIDs + Paracetamol<br>
+        → Consider adjuvant if neuropathic features emerge
+      </div>
+      <div style="text-align:center;font-size:0.65em;background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;">
+        <strong>Neuropathic signs?</strong><br>
+        → Gabapentinoid / TCA / SNRI<br>
+        → Opioid only as last resort
+      </div>
+    </div>
+    <div class="flow-arrow">▼</div>
+    <div class="flex-row" style="gap:20px;">
+      <div style="text-align:center;font-size:0.65em;background:#fff7ed;padding:10px 14px;border-radius:10px;border:1px solid #fdba74;">
+        <strong>Red flags?</strong><br>
+        <span style="color:#dc2626;">Caution needed:</span><br>
+        • Elderly → avoid NSAIDs if renal impaired<br>
+        • GI history → PPI cover or avoid NSAIDs<br>
+        • Addiction history → avoid opioids<br>
+        • Liver disease → avoid / limit paracetamol<br>
+        • Pregnancy → paracetamol safest
+      </div>
+      <div style="text-align:center;font-size:0.65em;background:#f0fdf4;padding:10px 14px;border-radius:10px;border:1px solid #86efac;">
+        <strong>Physio timing</strong><br>
+        <span style="color:#16a34a;">Optimise your session:</span><br>
+        • NSAIDs: 1–2 hrs post-dose<br>
+        • Paracetamol: 30–60 min post-dose<br>
+        • Topical: apply 15–20 min before<br>
+        • Opioids: work within pain relief window (± sedation trade-off)<br>
+        • Adjuvants: consistent timing, avoid peak side effects
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 13: SIDE EFFECTS RADAR ===== -->
+<section>
+  <h2>Side Effect Profile Comparison</h2>
+  <p style="font-size:0.7em;color:#64748b;">Higher score = more problematic</p>
+  <div class="chart-container" style="height:350px;">
+    <canvas id="sideEffectsChart"></canvas>
+  </div>
+</section>
+
+<!-- ===== SLIDE 14: KEY TAKEAWAYS ===== -->
+<section>
+  <h2>Key Takeaways for Physiotherapists</h2>
+  <div style="margin-top:15px;text-align:left;">
+    <div class="takeaway"><p><strong>1. Know the pain mechanism</strong> — Inflammatory pain → NSAIDs. Neuropathic → Adjuvants. Mixed → Combine. This is the single most important skill.</p></div>
+    <div class="takeaway"><p><strong>2. Work with the medication timeline</strong> — Schedule your hands-on and exercise interventions during the drug's peak effect window. Document response.</p></div>
+    <div class="takeaway"><p><strong>3. Screen for red flags</strong> — GI / renal / CV / hepatic comorbidities change the risk–benefit. Know your patient's full medication list.</p></div>
+    <div class="takeaway"><p><strong>4. Topicals are underused</strong> — First-line for localised OA and tendinopathy per NICE guidelines. Zero systemic side effects. Recommend them confidently.</p></div>
+    <div class="takeaway"><p><strong>5. Opioids: respect but don't fear</strong> — They have a role in acute severe pain and post-surgical rehab. Be aware of dependence risk, sedation, and the opioid crisis.</p></div>
+    <div class="takeaway"><p><strong>6. Communicate with prescribers</strong> — You see the patient more frequently than their GP. Your feedback on pain response to medication is clinically valuable.</p></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 15: REFERENCES ===== -->
+<section>
+  <h2>References & Further Reading</h2>
+  <div style="margin-top:15px;text-align:left;font-size:0.7em;line-height:1.8;">
+    <p>📄 <strong>NICE Guidelines:</strong><br>
+    • NG226 — Osteoarthritis: diagnosis and management (2022)<br>
+    • NG193 — Chronic pain (primary and secondary) (2021)<br>
+    • NG59 — Low back pain and sciatica (2020)</p>
+    <p>📄 <strong>Key Reviews:</strong><br>
+    • Machado GC et al. <em>BMJ</em> 2021 — Paracetamol for spinal pain and OA<br>
+    • Wiffen PJ et al. <em>Cochrane</em> 2017 — Opioids for chronic non-cancer pain<br>
+    • Finnerup NB et al. <em>Lancet Neurology</em> 2015 — Neuropathic pain pharmacotherapy</p>
+    <p>📄 <strong>Physio-Specific:</strong><br>
+    • Australian Physiotherapy Association — Pain medications: a guide for physiotherapists<br>
+    • Chartered Society of Physiotherapy — Analgesics: what physios need to know</p>
+  </div>
+  <p style="margin-top:20px;font-size:0.6em;color:#94a3b8;">This deck is for educational purposes. Always consult current guidelines and a pharmacist/GP for individual patient advice.</p>
+</section>
+
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: true,
+    center: true,
+    width: 1100,
+    height: 700,
+    margin: 0.05,
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    navigationMode: 'linear'
+  });
+
+  // ---- Topical Analgesics Bar Chart ----
+  new Chart(document.getElementById('topicalChart'), {
+    type: 'bar',
+    data: {
+      labels: ['NSAID gel', 'Capsaicin', 'Lidocaine', 'Menthol', 'Counter-irritant'],
+      datasets: [{
+        label: 'Pain reduction (NNT)',
+        data: [3.5, 4.2, 5.0, 6.5, 7.0],
+        backgroundColor: ['#3b82f6', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `NNT: ${ctx.raw}` } }
+      },
+      scales: {
+        y: {
+          reverse: false,
+          title: { display: true, text: 'NNT (lower = better)', font: { size: 10 } },
+          min: 0,
+          max: 10,
+          ticks: { font: { size: 9 } }
+        },
+        x: { ticks: { font: { size: 8 }, maxRotation: 0 } }
+      }
+    }
+  });
+
+  // ---- Efficacy Radar Chart ----
+  new Chart(document.getElementById('efficacyChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Inflammatory', 'Neuropathic', 'Acute MSK', 'Chronic MSK', 'Post-surgical', 'Headache'],
+      datasets: [
+        { label: 'NSAIDs', data: [9, 1, 8, 3, 6, 5], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', tension: 0.3 },
+        { label: 'Paracetamol', data: [3, 2, 4, 4, 4, 6], borderColor: '#84cc16', backgroundColor: 'rgba(132,204,22,0.1)', tension: 0.3 },
+        { label: 'Opioids', data: [2, 4, 9, 2, 9, 1], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', tension: 0.3 },
+        { label: 'Adjuvants', data: [1, 9, 1, 7, 2, 7], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 9 }, boxWidth: 12, padding: 8 } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { font: { size: 8 }, stepSize: 2, backdropColor: 'transparent' },
+          pointLabels: { font: { size: 9 } }
+        }
+      }
+    }
+  });
+
+  // ---- Side Effects Radar Chart ----
+  new Chart(document.getElementById('sideEffectsChart'), {
+    type: 'radar',
+    data: {
+      labels: ['GI risk', 'Renal risk', 'Sedation', 'Addiction', 'CV risk', 'Hepatic risk'],
+      datasets: [
+        { label: 'NSAIDs', data: [8, 7, 1, 1, 5, 2], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', tension: 0.3 },
+        { label: 'Paracetamol', data: [1, 1, 1, 1, 1, 8], borderColor: '#84cc16', backgroundColor: 'rgba(132,204,22,0.1)', tension: 0.3 },
+        { label: 'Opioids', data: [4, 1, 9, 9, 1, 1], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', tension: 0.3 },
+        { label: 'Adjuvants', data: [2, 2, 6, 3, 2, 3], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', tension: 0.3 },
+        { label: 'Topical', data: [2, 1, 1, 1, 2, 1], borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.1)', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 9 }, boxWidth: 12, padding: 8 } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { font: { size: 8 }, stepSize: 2, backdropColor: 'transparent' },
+          pointLabels: { font: { size: 9 } }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>

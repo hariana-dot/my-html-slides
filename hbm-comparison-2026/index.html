@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBM Competition 2026 | SK hynix vs Samsung vs Micron</title>
+    
+    <!-- Reveal.js CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --bg-dark: #0D1B2A;
+            --bg-card: #112240;
+            --accent-cyan: #00C6FF;
+            --accent-gold: #FBBF24;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --success: #22C55E;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        
+        .reveal {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .reveal h1 { font-size: 2.6em; line-height: 1.1; }
+        .reveal h2 { font-size: 2.0em; }
+        .reveal h3 { font-size: 1.5em; }
+        
+        .reveal p, .reveal li {
+            color: var(--text-secondary);
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        .reveal section {
+            padding: 40px 70px;
+        }
+        
+        .slide-with-bg {
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .slide-with-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(13, 27, 42, 0.65);
+            z-index: 0;
+        }
+        
+        .slide-with-bg .content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(0, 198, 255, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .metric {
+            font-size: 2.2em;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--accent-cyan);
+        }
+        
+        .company-skh { border-left: 5px solid #00C6FF; }
+        .company-samsung { border-left: 5px solid #FBBF24; }
+        .company-micron { border-left: 5px solid #22C55E; }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        
+        .comparison-table th {
+            background: #1E3A5F;
+            color: var(--accent-cyan);
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+            color: var(--text-secondary);
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(0, 198, 255, 0.05);
+        }
+        
+        .leader {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .highlight {
+            background: rgba(251, 191, 36, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .section-title {
+            color: var(--accent-cyan);
+            font-size: 1.1em;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .neon-cyan {
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+        }
+        
+        .stat-pill {
+            display: inline-block;
+            background: rgba(0, 198, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .footer-note {
+            font-size: 0.75em;
+            color: #64748B;
+            margin-top: 40px;
+        }
+        
+        .reveal .slides {
+            text-align: left;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .investment-callout {
+            border-left: 4px solid var(--accent-gold);
+            background: rgba(251, 191, 36, 0.08);
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- SLIDE 1: Title -->
+            <section class="slide-with-bg" data-background-image="images/bg-title.jpg" data-background-size="cover" data-background-opacity="0.35">
+                <div class="content">
+                    <div style="max-width: 920px; margin: 0 auto; text-align: center; padding-top: 60px;">
+                        <div class="stat-pill" style="margin-bottom: 24px;">JUNE 2026 • AI MEMORY SUPERCYCLE</div>
+                        
+                        <h1 style="font-size: 3.1em; line-height: 1.05; margin-bottom: 16px;">
+                            The HBM Arms Race
+                        </h1>
+                        <h2 style="font-size: 1.9em; color: #94A3B8; margin-bottom: 32px;">
+                            SK hynix vs Samsung vs Micron<br>
+                            <span style="color: var(--accent-gold);">Who Wins the AI Memory Crown?</span>
+                        </h2>
+                        
+                        <div style="display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap;">
+                            <div>
+                                <div style="font-size: 0.9em; color: #64748B;">TECHNOLOGY</div>
+                                <div style="font-size: 1.4em; font-weight: 600;">HBM4 Leadership</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9em; color: #64748B;">MARKET</div>
+                                <div style="font-size: 1.4em; font-weight: 600;">Structural Shift</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9em; color: #64748B;">INVESTMENT</div>
+                                <div style="font-size: 1.4em; font-weight: 600;">New Cycle Dynamics</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 2: Why HBM is Different (Investment Thesis) -->
+            <section class="slide-with-bg" data-background-image="images/bg-investment.jpg" data-background-size="cover" data-background-opacity="0.4">
+                <div class="content">
+                    <div style="max-width: 1100px;">
+                        <div class="section-title">Investment Thesis</div>
+                        <h2 style="margin-bottom: 24px;">HBM is Not Your Grandfather’s DRAM</h2>
+                        
+                        <div class="two-column">
+                            <div>
+                                <div class="card">
+                                    <h3 style="margin-bottom: 16px; color: var(--accent-gold);">Traditional DRAM / NAND</h3>
+                                    <ul style="margin-left: 20px; line-height: 1.8;">
+                                        <li>Highly cyclical, boom-bust pricing</li>
+                                        <li>Commodity-like, price sensitive</li>
+                                        <li>Short qualification cycles</li>
+                                        <li>High supply elasticity</li>
+                                        <li>Easy for new entrants to ramp</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="card investment-callout">
+                                    <h3 style="margin-bottom: 16px; color: var(--accent-cyan);">HBM — Structural Shift</h3>
+                                    <ul style="margin-left: 20px; line-height: 1.8;">
+                                        <li><strong>Long-term supply agreements</strong> (multi-year, volume committed)</li>
+                                        <li>Extremely high technical barriers (TSV, packaging, yield)</li>
+                                        <li>Deep co-design with customers (NVIDIA, AMD, hyperscalers)</li>
+                                        <li>Sticky relationships — once qualified, hard to displace</li>
+                                        <li>Capacity sold out years in advance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 24px; font-size: 1.05em; color: #CBD5E1;">
+                            <strong>Key Insight:</strong> HBM margins and visibility are structurally higher. 
+                            This is closer to a specialty foundry business than traditional memory.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 3: The Three Contenders + China -->
+            <section>
+                <div class="content">
+                    <div class="section-title">The Competitive Landscape</div>
+                    <h2 style="margin-bottom: 32px;">Three Leaders + China’s Rising Challenge</h2>
+                    
+                    <div class="three-column">
+                        <!-- SK hynix -->
+                        <div class="card company-skh">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #00C6FF, #0099CC); border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.3em;">H</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.35em;">SK hynix</div>
+                                    <div style="color: #64748B; font-size: 0.9em;">South Korea</div>
+                                </div>
+                            </div>
+                            <div class="stat-pill" style="background: rgba(0,198,255,0.15); color: #00C6FF; margin-bottom: 12px;">~55-62% HBM Share</div>
+                            <p style="font-size: 0.95em;">Clear technology leader. Deepest NVIDIA relationship. First to ship advanced HBM4 stacks. Highest margins in the group.</p>
+                        </div>
+                        
+                        <!-- Samsung -->
+                        <div class="card company-samsung">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FBBF24, #D97706); border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: #0D1B2A; font-weight: 700; font-size: 1.3em;">S</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.35em;">Samsung Electronics</div>
+                                    <div style="color: #64748B; font-size: 0.9em;">South Korea</div>
+                                </div>
+                            </div>
+                            <div class="stat-pill" style="background: rgba(251,191,36,0.15); color: #FBBF24; margin-bottom: 12px;">~17-22% HBM Share</div>
+                            <p style="font-size: 0.95em;">Largest memory maker overall. Rebounding fast with 1c DRAM + 4nm base die. Strong vertical integration. Certified for NVIDIA Rubin.</p>
+                        </div>
+                        
+                        <!-- Micron -->
+                        <div class="card company-micron">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #22C55E, #16A34A); border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.3em;">M</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.35em;">Micron Technology</div>
+                                    <div style="color: #64748B; font-size: 0.9em;">United States</div>
+                                </div>
+                            </div>
+                            <div class="stat-pill" style="background: rgba(34,197,94,0.15); color: #22C55E; margin-bottom: 12px;">~20-23% HBM Share</div>
+                            <p style="font-size: 0.95em;">Fastest riser. Strong design wins as NVIDIA second source. Aggressive capacity expansion. Sold out 2026 supply. High patent count.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 32px; padding: 20px 24px; background: rgba(239, 68, 68, 0.08); border-left: 4px solid #EF4444; border-radius: 0 12px 12px 0;">
+                        <strong style="color: #EF4444;">China Factor (CXMT + Others):</strong> 
+                        Significant progress in HBM development but still 2–3 generations behind on performance/yield. 
+                        Focused on domestic AI chips. Advanced equipment sanctions limit their ability to close the gap quickly. 
+                        Long-term strategic threat but not a near-term competitive force in high-end HBM.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 4: Market Share -->
+            <section>
+                <div class="content">
+                    <div class="section-title">Market Reality</div>
+                    <h2 style="margin-bottom: 24px;">HBM Market Share Evolution (2025–2026)</h2>
+                    
+                    <div class="two-column">
+                        <div class="card">
+                            <h3 style="margin-bottom: 16px;">HBM Market Share (Recent)</h3>
+                            <div style="display: flex; flex-direction: column; gap: 14px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div><strong>SK hynix</strong></div>
+                                    <div style="font-weight: 700; color: #00C6FF;">55–62%</div>
+                                </div>
+                                <div style="height: 8px; background: #1E3A5F; border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 58%; height: 100%; background: #00C6FF;"></div>
+                                </div>
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div><strong>Micron</strong></div>
+                                    <div style="font-weight: 700; color: #22C55E;">20–23%</div>
+                                </div>
+                                <div style="height: 8px; background: #1E3A5F; border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 22%; height: 100%; background: #22C55E;"></div>
+                                </div>
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div><strong>Samsung</strong></div>
+                                    <div style="font-weight: 700; color: #FBBF24;">17–22%</div>
+                                </div>
+                                <div style="height: 8px; background: #1E3A5F; border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 20%; height: 100%; background: #FBBF24;"></div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85em; margin-top: 16px; color: #64748B;">Source: Counterpoint, TrendForce, company reports (Q2 2025 – Q1 2026 data)</p>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 style="margin-bottom: 16px;">Key Observations</h3>
+                            <ul style="line-height: 1.9; font-size: 1.0em;">
+                                <li>SK hynix maintains dominant position thanks to early HBM3E leadership and NVIDIA preference.</li>
+                                <li>Micron has gained share fastest as a qualified second source.</li>
+                                <li>Samsung slipped but is regaining ground with HBM4 qualification success.</li>
+                                <li><strong>All three have sold out most of their 2026 HBM capacity.</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 5: HBM4 Technology Race -->
+            <section class="slide-with-bg" data-background-image="images/bg-competition.jpg" data-background-size="cover" data-background-opacity="0.55">
+                <div class="content">
+                    <div style="max-width: 1050px;">
+                        <div class="section-title" style="color: #FBBF24;">The New Battleground</div>
+                        <h2 style="margin-bottom: 20px;">HBM4 — The Packaging &amp; Process Race</h2>
+                        
+                        <div class="card" style="background: rgba(17, 34, 64, 0.85);">
+                            <p style="font-size: 1.05em; margin-bottom: 20px;">
+                                HBM4 represents a major leap: <strong>2048-bit interface</strong> (double previous gen), 
+                                much taller stacks (12-Hi / 16-Hi), significantly higher bandwidth per stack, 
+                                and aggressive power efficiency improvements.
+                            </p>
+                            
+                            <div class="three-column" style="margin-top: 12px;">
+                                <div>
+                                    <div style="font-size: 0.9em; color: #64748B;">SK hynix</div>
+                                    <div style="font-weight: 600; font-size: 1.1em;">First to demonstrate 16-Hi 48GB stacks</div>
+                                    <div style="font-size: 0.9em; margin-top: 6px;">Strong MR-MUF packaging • 40%+ power efficiency gain claimed</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9em; color: #64748B;">Samsung</div>
+                                    <div style="font-weight: 600; font-size: 1.1em;">1c DRAM + 4nm logic base die</div>
+                                    <div style="font-size: 0.9em; margin-top: 6px;">Best process node advantage • Up to 13 Gbps/pin claimed</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9em; color: #64748B;">Micron</div>
+                                    <div style="font-weight: 600; font-size: 1.1em;">Fast sample shipping • High speed focus</div>
+                                    <div style="font-size: 0.9em; margin-top: 6px;">Strong patent portfolio • Aggressive capacity build-out</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 6: Head-to-Head Comparison -->
+            <section>
+                <div class="content">
+                    <div class="section-title">HBM4 Comparison</div>
+                    <h2 style="margin-bottom: 20px;">Head-to-Head: Who Leads Where?</h2>
+                    
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">Metric</th>
+                                <th style="width: 26%;">SK hynix</th>
+                                <th style="width: 26%;">Samsung</th>
+                                <th style="width: 26%;">Micron</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>HBM4 Status (Jun 2026)</strong></td>
+                                <td class="leader">Volume ramping, early leader</td>
+                                <td>Mass production H1 2026</td>
+                                <td>High-volume ramping 2026</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Max Stack / Capacity</strong></td>
+                                <td class="leader">16-Hi / 48GB+</td>
+                                <td>12-Hi (targeting higher)</td>
+                                <td>12-Hi / 36GB</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Peak Speed</strong></td>
+                                <td>~10–11+ GT/s</td>
+                                <td class="leader">Up to 13 Gbps/pin</td>
+                                <td>&gt;11 Gbps/pin samples</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Key Technology Edge</strong></td>
+                                <td>Advanced packaging (MR-MUF), early stack height</td>
+                                <td class="leader">1c DRAM + 4nm base die (best node)</td>
+                                <td>Speed, patents, capacity expansion</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Power Efficiency</strong></td>
+                                <td class="leader">40%+ improvement claimed</td>
+                                <td>Strong (advanced node)</td>
+                                <td>Competitive</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2026 Supply Status</strong></td>
+                                <td class="leader">Sold out / Tight</td>
+                                <td>Sold out / Tight</td>
+                                <td class="leader">Sold out</td>
+                            </tr>
+                            <tr>
+                                <td><strong>NVIDIA Relationship</strong></td>
+                                <td class="leader">Primary supplier (strongest)</td>
+                                <td>Qualified for Rubin</td>
+                                <td>Strong second source</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p style="font-size: 0.9em; color: #64748B; margin-top: 12px;">
+                        Data compiled from company announcements, earnings calls, and industry reports (Counterpoint, SemiAnalysis, TrendForce) as of June 2026.
+                    </p>
+                </div>
+            </section>
+            
+            <!-- SLIDE 7: Supply & Capacity -->
+            <section>
+                <div class="content">
+                    <div class="section-title">Supply Dynamics</div>
+                    <h2 style="margin-bottom: 24px;">2026 HBM Supply is Extremely Tight</h2>
+                    
+                    <div class="three-column">
+                        <div class="card">
+                            <h3 style="color: #00C6FF; margin-bottom: 12px;">SK hynix</h3>
+                            <p>Planning major capacity expansion. KRW 40T+ capex range discussed for memory. HBM4 share expected to remain dominant (~60-70% for NVIDIA Rubin in some analyst estimates).</p>
+                        </div>
+                        <div class="card">
+                            <h3 style="color: #FBBF24; margin-bottom: 12px;">Samsung</h3>
+                            <p>Resumed Pyeongtaek P5 fab construction. Leveraging advanced 1c DRAM to close technology gap. Targeting meaningful share recovery in HBM4.</p>
+                        </div>
+                        <div class="card">
+                            <h3 style="color: #22C55E; margin-bottom: 12px;">Micron</h3>
+                            <p>Aggressive “megaplant” expansion in Taiwan and Japan. Strong focus on winning design slots beyond primary NVIDIA position. High capex intensity.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="investment-callout" style="margin-top: 28px;">
+                        <strong>Investment Implication:</strong> Because HBM capacity is pre-sold via long-term agreements, 
+                        the usual memory inventory correction risk is significantly reduced. Visibility into 2026–2027 revenue is unusually high for all three players.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 8: Investment Implications -->
+            <section>
+                <div class="content">
+                    <div class="section-title">Investment Angle</div>
+                    <h2 style="margin-bottom: 24px;">What This Means for Investors</h2>
+                    
+                    <div class="two-column">
+                        <div class="card">
+                            <h3 style="margin-bottom: 16px;">Bull Case for the Group</h3>
+                            <ul style="line-height: 1.85;">
+                                <li>Multi-year visibility from LTAs (long-term agreements)</li>
+                                <li>High incremental margins on HBM vs legacy DRAM</li>
+                                <li>AI demand growth still outpacing supply additions</li>
+                                <li>Barriers to entry rising (not falling)</li>
+                                <li>Potential for sustained high ROIC in HBM segment</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 style="margin-bottom: 16px;">Key Risks &amp; Watch Points</h3>
+                            <ul style="line-height: 1.85;">
+                                <li>Execution risk on HBM4 yields and qualification</li>
+                                <li>Customer concentration (especially NVIDIA exposure)</li>
+                                <li>Capex intensity remains very high</li>
+                                <li>Geopolitical risk (Korea, Taiwan, US export controls)</li>
+                                <li>Potential future oversupply if all expansions succeed simultaneously</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px; padding: 18px 22px; background: #112240; border-radius: 12px;">
+                        <strong>Relative Positioning (as of mid-2026):</strong><br>
+                        <span style="color: #00C6FF;">SK hynix</span> — Highest quality compounder with best visibility.<br>
+                        <span style="color: #22C55E;">Micron</span> — Highest torque to share gains; more cyclical but faster upside.<br>
+                        <span style="color: #FBBF24;">Samsung</span> — Most undervalued optionality if HBM4 execution succeeds.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SLIDE 9: Key Takeaways -->
+            <section>
+                <div class="content" style="max-width: 980px;">
+                    <div class="section-title">Conclusion</div>
+                    <h2 style="margin-bottom: 28px;">Key Takeaways — June 2026</h2>
+                    
+                    <div style="display: grid; gap: 16px;">
+                        <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div style="font-size: 2em; font-weight: 700; color: var(--accent-cyan); line-height: 1;">01</div>
+                            <div>
+                                <strong>HBM is structurally different</strong> — long-term contracts and extreme technical barriers create a more stable, higher-margin business than traditional memory.
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div style="font-size: 2em; font-weight: 700; color: var(--accent-cyan); line-height: 1;">02</div>
+                            <div>
+                                <strong>SK hynix currently leads</strong> on technology, share, and customer intimacy. Hard to displace in the near term.
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div style="font-size: 2em; font-weight: 700; color: var(--accent-cyan); line-height: 1;">03</div>
+                            <div>
+                                <strong>Micron is the fastest riser</strong> and a credible #2. Strong torque for investors betting on share gains.
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div style="font-size: 2em; font-weight: 700; color: var(--accent-cyan); line-height: 1;">04</div>
+                            <div>
+                                <strong>Samsung has the most upside optionality</strong> if its 1c + advanced packaging execution delivers in HBM4.
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div style="font-size: 2em; font-weight: 700; color: var(--accent-cyan); line-height: 1;">05</div>
+                            <div>
+                                <strong>China remains a long-term strategic concern</strong> but is not yet a material competitor in high-performance HBM.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="footer-note">
+                        All three companies are well positioned for the multi-year AI infrastructure buildout. 
+                        The winners will be those who execute flawlessly on HBM4 yields, capacity, and customer qualifications.
+                    </p>
+                </div>
+            </section>
+            
+            <!-- SLIDE 10: Thank You / Sources -->
+            <section style="text-align: center; padding-top: 80px;">
+                <div class="content">
+                    <h2 style="margin-bottom: 16px;">Thank You</h2>
+                    <p style="max-width: 620px; margin: 0 auto 40px;">
+                        This presentation summarizes publicly available information as of June 2026. 
+                        HBM dynamics are evolving rapidly — always cross-check latest earnings and analyst updates.
+                    </p>
+                    
+                    <div style="font-size: 0.85em; color: #64748B; max-width: 720px; margin: 0 auto;">
+                        Sources include: Company earnings releases &amp; conference calls (SK hynix, Samsung, Micron), 
+                        Counterpoint Research, TrendForce, SemiAnalysis, Tom's Hardware, Bloomberg, Reuters, and industry reports.
+                    </div>
+                    
+                    <div style="margin-top: 60px; font-size: 0.9em; color: #475569;">
+                        Prepared with html-visual-deck • Visual Heavy Mode<br>
+                        Project: hbm-competition-2026
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+    
+    <!-- Reveal.js Script -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            controls: true,
+            progress: true,
+            center: false,
+            width: 1280,
+            height: 720,
+            margin: 0.05
+        });
+        
+        // Keyboard navigation hint
+        console.log('%c[HBM Deck] Reveal.js presentation ready. Use arrow keys or space to navigate.', 'color:#64748B');
+    </script>
+</body>
+</html>
