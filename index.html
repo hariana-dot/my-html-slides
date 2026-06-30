@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Physiotherapy Progress Note Peer Review Rubric</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8fafc; --bg-2:#ffffff;
+  --ink:#0f172a; --ink-2:#334155; --ink-3:#64748b; --ink-4:#94a3b8;
+  --accent:#2563eb;
+  --accent-2:#059669;
+  --warn:#d97706;
+  --danger:#dc2626;
+  --t1:52px; --t2:32px; --t3:20px; --t4:14px;
+  --s1:72px; --s2:42px; --s3:22px; --s4:12px;
+  --font:'Inter','Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--ink)}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:100;transition:width .45s ease}
+#section-tag{position:fixed;top:18px;left:24px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-3);z-index:99;background:var(--bg-2);padding:4px 12px;border-radius:4px;border:1px solid #e2e8f0}
+#pageInfo{position:fixed;bottom:24px;right:24px;font-family:var(--mono);font-size:13px;color:var(--ink-4);z-index:99}
+#hint{position:fixed;bottom:24px;left:24px;font-family:var(--mono);font-size:11px;color:var(--ink-4);z-index:99;opacity:.5}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:70px 80px;opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;transform:translateY(20px);overflow:hidden}
+.slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+.slide-inner{width:100%;max-width:1200px}
+/* cover */
+.cover{text-align:center}
+.cover .kicker{font-family:var(--mono);font-size:var(--t4);color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+.cover h1{font-size:var(--s1);font-weight:800;line-height:1.15;margin-bottom:20px;color:var(--ink)}
+.cover .sub{font-size:var(--t2);font-weight:400;color:var(--ink-2);max-width:700px;margin:0 auto 32px;line-height:1.5}
+.cover .meta{font-size:var(--t4);color:var(--ink-3);font-family:var(--mono)}
+/* headings */
+h2{font-size:var(--t1);font-weight:700;line-height:1.2;margin-bottom:12px}
+h2 .num{display:inline-block;background:var(--accent);color:#fff;font-size:18px;font-weight:700;width:40px;height:40px;line-height:40px;text-align:center;border-radius:8px;margin-right:12px;vertical-align:middle}
+h3{font-size:var(--t2);font-weight:600;line-height:1.3;margin-bottom:10px;color:var(--ink)}
+h4{font-size:var(--t3);font-weight:600;margin-bottom:6px;color:var(--ink-2)}
+.kicker-line{font-family:var(--mono);font-size:var(--t4);color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+p,li{font-size:var(--t3);line-height:1.6;color:var(--ink-2)}
+/* cards */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:16px}
+.card{background:var(--bg-2);border-radius:12px;padding:24px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card h4{color:var(--accent);font-size:18px}
+.card .score{font-family:var(--mono);font-size:var(--t4);color:var(--ink-3);margin-bottom:4px}
+.card ul{padding-left:18px;margin-top:6px}
+.card ul li{font-size:var(--t4);margin-bottom:4px}
+.score-4{border-top:3px solid var(--accent)}
+.score-5{border-top:3px solid var(--accent-2)}
+.score-1{border-top:3px solid var(--danger)}
+.score-2{border-top:3px solid var(--warn)}
+.score-3{border-top:3px solid #eab308}
+/* table */
+table{width:100%;border-collapse:collapse;margin-top:12px;background:var(--bg-2);border-radius:8px;overflow:hidden}
+th{background:var(--ink);color:#fff;font-weight:600;font-size:var(--t4);padding:12px 16px;text-align:left;cursor:pointer;user-select:none}
+th:hover{background:#1e293b}
+td{padding:12px 16px;font-size:var(--t4);border-bottom:1px solid #e2e8f0;color:var(--ink-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+/* highlight */
+.highlight-box{background:var(--bg-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:20px 24px;margin-top:16px}
+.highlight-box.warn{border-left-color:var(--warn)}
+.highlight-box.success{border-left-color:var(--accent-2)}
+.highlight-box h4{margin-bottom:4px}
+/* list compact */
+.compact-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.compact-list .tag{background:#e2e8f0;color:var(--ink-2);padding:6px 16px;border-radius:20px;font-size:var(--t4);font-weight:500}
+/* pass-fail */
+.pass-fail{display:flex;gap:24px;margin-top:20px;justify-content:center}
+.pass-fail .pf-card{flex:1;max-width:300px;text-align:center;padding:32px 24px;border-radius:16px}
+.pf-card.pass{background:#ecfdf5;border:2px solid var(--accent-2)}
+.pf-card.fail{background:#fef2f2;border:2px solid var(--danger)}
+.pf-card .icon{font-size:48px;margin-bottom:8px}
+.pf-card h3{font-size:28px}
+/* cta */
+.cta-section{text-align:center;padding:40px 0}
+.cta-section h2{font-size:var(--s1);margin-bottom:16px}
+.cta-section p{font-size:var(--t2);max-width:600px;margin:0 auto}
+/* responsive */
+@media(max-width:900px){
+  .slide{padding:40px 32px}
+  .grid-3{grid-template-columns:1fr 1fr}
+  :root{--t1:40px;--s1:52px}
+}
+@media(max-width:600px){
+  .slide{padding:24px 16px}
+  .grid-3,.grid-2{grid-template-columns:1fr}
+  :root{--t1:30px;--t2:22px;--t3:16px;--s1:38px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="section-tag">Overview</div>
+<div id="pageInfo">1 / 12</div>
+<div id="hint">&larr; &rarr; navigate</div>
+
+<!-- 1: Cover -->
+<section class="slide active" data-slide="1" data-section="Overview">
+<div class="slide-inner cover">
+  <div class="kicker">Clinical Peer Review</div>
+  <h1>Physiotherapy Progress Note<br>Assessment Rubric</h1>
+  <p class="sub">A structured framework for evaluating clinical documentation quality and clinical reasoning across 7 key domains</p>
+  <div class="meta">Scoring System &bull; 4 = Entry-Level Safe &bull; 5 = Experienced</div>
+</div>
+</section>
+
+<!-- 2: Overview of 7 Areas -->
+<section class="slide" data-slide="2" data-section="Overview">
+<div class="slide-inner">
+  <div class="kicker-line">Assessment Framework</div>
+  <h2>7 Key Assessment Areas</h2>
+  <p style="margin-bottom:8px;font-size:var(--t3)">Each area is scored 1&ndash;5. A score of 4 or above in <strong>all</strong> areas is required for an overall Pass.</p>
+  <div class="grid-3">
+    <div class="card"><h4>1</h4><p>Documentation Quality<br><span style="font-size:var(--t4);color:var(--ink-3)">Completeness &amp; clarity</span></p></div>
+    <div class="card"><h4>2</h4><p>Clinical Reasoning<br><span style="font-size:var(--t4);color:var(--ink-3)">Diagnosis &amp; severity</span></p></div>
+    <div class="card"><h4>3</h4><p>Clinical Reasoning<br><span style="font-size:var(--t4);color:var(--ink-3)">Personal &amp; social history</span></p></div>
+    <div class="card"><h4>4</h4><p>Clinical Reasoning<br><span style="font-size:var(--t4);color:var(--ink-3)">Client's perspective</span></p></div>
+    <div class="card"><h4>5</h4><p>Objective Measures<br><span style="font-size:var(--t4);color:var(--ink-3)">Standardized tools &amp; interpretation</span></p></div>
+    <div class="card"><h4>6</h4><p>Problem Identification<br><span style="font-size:var(--t4);color:var(--ink-3)">Prioritization &amp; synthesis</span></p></div>
+    <div class="card" style="grid-column:2"><h4>7</h4><p>Treatment Plans &amp; Goals<br><span style="font-size:var(--t4);color:var(--ink-3)">SMART goals &amp; intervention planning</span></p></div>
+  </div>
+</div>
+</section>
+
+<!-- 3: General Scoring Guidelines -->
+<section class="slide" data-slide="3" data-section="Scoring">
+<div class="slide-inner">
+  <div class="kicker-line">Scoring System</div>
+  <h2>General Scoring Guidelines</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Scores 1&ndash;3 indicate deficiencies; scores 4 and 5 define competence levels.</p>
+  <div class="grid-3">
+    <div class="card score-1">
+      <div class="score">Score 1</div>
+      <h4 style="color:var(--danger)">Significant Deficiencies</h4>
+      <p style="font-size:var(--t4)">Documentation or clinical reasoning deficiencies that may compromise patient safety or care quality.</p>
+    </div>
+    <div class="card score-2">
+      <div class="score">Score 2</div>
+      <h4 style="color:var(--warn)">Multiple Deficiencies</h4>
+      <p style="font-size:var(--t4)">Indicates a need for substantial improvement across several areas of practice.</p>
+    </div>
+    <div class="card score-3">
+      <div class="score">Score 3</div>
+      <h4 style="color:#ca8a04">Minor Deficiencies</h4>
+      <p style="font-size:var(--t4)">Inconsistencies requiring attention to detail and adherence to standard practices.</p>
+    </div>
+  </div>
+  <div class="highlight-box success" style="margin-top:16px">
+    <h4 style="color:var(--accent-2)">Pass Threshold</h4>
+    <p style="font-size:var(--t4)">Score &ge; 4 in ALL seven areas. Feedback is constructive, concise, and professional. For scores of 4, qualitative feedback highlights where elements of a 5 are partially achieved, without introducing fractional scores.</p>
+  </div>
+</div>
+</section>
+
+<!-- 4: Area 1 - Documentation Quality -->
+<section class="slide" data-slide="4" data-section="Area 1">
+<div class="slide-inner">
+  <div class="kicker-line">Area 1 of 7</div>
+  <h2><span class="num">1</span>Documentation Quality</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Evaluating completeness, clarity, and organization of clinical records.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Complete &amp; Compliant</h4>
+      <ul>
+        <li>All mandatory information is present</li>
+        <li>Required documents (assessment forms, consent) are uploaded</li>
+        <li>Adheres to organizational standards for completeness</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Clear, Concise &amp; Well-Organized</h4>
+      <ul>
+        <li>Exceptionally clear and concise documentation</li>
+        <li>Well-organized for immediate understanding of patient status, progress, and rationale</li>
+        <li>Includes relevant contextual details without being verbose</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:12px">
+    <p style="font-size:var(--t4)"><strong>Key distinction:</strong> Score 5 goes beyond mere compliance&mdash;documentation that facilitates <em>immediate</em> understanding of the full clinical picture.</p>
+  </div>
+</div>
+</section>
+
+<!-- 5: Area 2 - Clinical Reasoning: Diagnosis & Severity -->
+<section class="slide" data-slide="5" data-section="Area 2">
+<div class="slide-inner">
+  <div class="kicker-line">Area 2 of 7</div>
+  <h2><span class="num">2</span>Clinical Reasoning: Nature &amp; Severity</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Assessing diagnostic accuracy and depth of condition analysis.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Accurate Identification</h4>
+      <ul>
+        <li>Diagnosis and primary conditions accurately identified and documented</li>
+        <li>Clear statement of severity or stage (e.g., "Acute LBP, moderate severity")</li>
+        <li>Reasoning follows a logical, evidence-informed process</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Sophisticated Clinical Reasoning</h4>
+      <ul>
+        <li>Links diagnosis and severity to specific functional limitations and participation restrictions</li>
+        <li>Considers relevant prognostic factors</li>
+        <li>Addresses intrinsic and extrinsic factors (comorbidities, social determinants of health) influencing condition and recovery</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 6: Area 3 - Personal & Social History -->
+<section class="slide" data-slide="6" data-section="Area 3">
+<div class="slide-inner">
+  <div class="kicker-line">Area 3 of 7</div>
+  <h2><span class="num">3</span>Clinical Reasoning: Personal &amp; Social History</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Evaluating how personal and social context informs clinical decision-making.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Accurate &amp; Complete Documentation</h4>
+      <ul>
+        <li>Pertinent history elements documented (living situation, support systems, prior functional status)</li>
+        <li>Directly relevant to the patient's current condition</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Holistic Integration</h4>
+      <ul>
+        <li>Integrates history into a holistic understanding of the patient</li>
+        <li>Demonstrates how factors influence health beliefs, coping strategies, and therapy engagement</li>
+        <li>Uses information to tailor interventions and anticipate potential barriers</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 7: Area 4 - Client's Perspective -->
+<section class="slide" data-slide="7" data-section="Area 4">
+<div class="slide-inner">
+  <div class="kicker-line">Area 4 of 7</div>
+  <h2><span class="num">4</span>Clinical Reasoning: Client's Perspective</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Assessing patient-centered care through documentation of subjective experience.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Active Listening Documented</h4>
+      <ul>
+        <li>Client's reported symptoms, concerns, and expectations accurately documented</li>
+        <li>Acknowledges the patient's subjective experience</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Shared Decision-Making</h4>
+      <ul>
+        <li>Emphathetic understanding of the client's perspective demonstrated</li>
+        <li>Incorporates patient values and preferences into shared decision-making</li>
+        <li>Notes reflect how symptoms impact daily life</li>
+        <li>Client's perspective guides goal setting and intervention choices</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 8: Area 5 - Objective Measures -->
+<section class="slide" data-slide="8" data-section="Area 5">
+<div class="slide-inner">
+  <div class="kicker-line">Area 5 of 7</div>
+  <h2><span class="num">5</span>Clinical Reasoning: Use of Objective Measures</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Evaluating selection, application, and interpretation of standardized measures.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Appropriate &amp; Accurate</h4>
+      <ul>
+        <li>Uses standardized, valid, and reliable measures (MFAC, EMS, goniometry, MMT)</li>
+        <li>Measures applied correctly</li>
+        <li>Results recorded accurately</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Strategic Selection &amp; Interpretation</h4>
+      <ul>
+        <li>Demonstrates understanding of psychometric properties and clinical utility</li>
+        <li>Utilizes broader range when indicated (single leg standing, balance tests, walking speed, diagnosis-specific measures)</li>
+        <li>Compares current findings to previous sessions to track progress and inform modifications</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 9: Area 6 - Problem Identification -->
+<section class="slide" data-slide="9" data-section="Area 6">
+<div class="slide-inner">
+  <div class="kicker-line">Area 6 of 7</div>
+  <h2><span class="num">6</span>Clinical Reasoning: Problem Identification &amp; Prioritization</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Assessing the ability to synthesize and prioritize patient problems.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Clear Definition &amp; Alignment</h4>
+      <ul>
+        <li>Key problems identified and prioritized accurately based on assessment findings</li>
+        <li>Aligned with standard clinical practice</li>
+        <li>Problems clearly defined and directly address functional limitations and impairments</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Advanced Synthesis</h4>
+      <ul>
+        <li>Identifies underlying causes and interrelationships between problems</li>
+        <li>Prioritizes by clinical urgency AND patient-centered goals</li>
+        <li>Considers likelihood of successful intervention</li>
+        <li>Accounts for intrinsic and extrinsic factors (motivation, environmental barriers)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 10: Area 7 - Treatment Plans & Goals -->
+<section class="slide" data-slide="10" data-section="Area 7">
+<div class="slide-inner">
+  <div class="kicker-line">Area 7 of 7</div>
+  <h2><span class="num">7</span>Clinical Reasoning: Treatment Plans &amp; Goals</h2>
+  <p style="margin-bottom:16px;font-size:var(--t3)">Evaluating goal-setting and intervention planning quality.</p>
+  <div class="grid-2">
+    <div class="card score-4">
+      <div class="score">Score 4 &mdash; Entry-Level / Safe</div>
+      <h4 style="color:var(--accent)">Logical &amp; Patient-Centered</h4>
+      <ul>
+        <li>Logical, patient-centered, and measurable goals (SMART goals)</li>
+        <li>Goals directly linked to identified problems and assessment findings</li>
+        <li>Treatment plan aligns with clinical guidelines and active case list requirements (A, B, C, PRN)</li>
+      </ul>
+    </div>
+    <div class="card score-5">
+      <div class="score">Score 5 &mdash; Experienced</div>
+      <h4 style="color:var(--accent-2)">Individualized &amp; Dynamic</h4>
+      <ul>
+        <li>Highly individualized plans reflecting unique presentation, prognosis, and psychosocial context</li>
+        <li>Goals ambitious yet realistic</li>
+        <li>Demonstrates adaptability based on ongoing patient response, condition changes, and goal progress</li>
+        <li>Reflects consideration of motivation, environmental factors, and updated chief complaints</li>
+        <li>Explicitly considers frequency and duration expectations of the assigned active case list</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 11: Score 4 vs Score 5 Comparison -->
+<section class="slide" data-slide="11" data-section="Summary">
+<div class="slide-inner">
+  <div class="kicker-line">Cross-Domain Comparison</div>
+  <h2>Score 4 vs. Score 5 at a Glance</h2>
+  <table>
+    <thead><tr><th>Domain</th><th>Score 4 Core Requirement</th><th>Score 5 Differentiator</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Documentation</strong></td><td>Complete, compliant, all documents uploaded</td><td>Exceptionally clear, concise, with contextual detail</td></tr>
+      <tr><td><strong>2. Diagnosis &amp; Severity</strong></td><td>Accurate diagnosis, logical evidence-informed reasoning</td><td>Links to functional limitations, prognostic factors, comorbidities</td></tr>
+      <tr><td><strong>3. Social History</strong></td><td>Pertinent history documented accurately</td><td>Holistic integration; tailored interventions anticipating barriers</td></tr>
+      <tr><td><strong>4. Client's Perspective</strong></td><td>Symptoms and concerns accurately documented</td><td>Emphathetic, shared decision-making, guides goals</td></tr>
+      <tr><td><strong>5. Objective Measures</strong></td><td>Standardized tools applied and recorded correctly</td><td>Strategic selection; tracks progress across sessions; broader range</td></tr>
+      <tr><td><strong>6. Problem ID</strong></td><td>Problems identified and aligned with clinical practice</td><td>Synthesizes interrelationships; prioritizes by urgency + goals + context</td></tr>
+      <tr><td><strong>7. Treatment Plans</strong></td><td>SMART goals linked to problems, aligned with case list</td><td>Dynamic, adaptable, reflects motivation and environment; considers frequency/duration</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- 12: Pass/Fail & CTA -->
+<section class="slide" data-slide="12" data-section="Conclusion">
+<div class="slide-inner">
+  <div class="kicker-line">Overall Assessment</div>
+  <h2>Pass or Needs Improvement?</h2>
+  <p style="text-align:center;font-size:var(--t3);margin-bottom:8px">A therapist must achieve at least <strong>Score 4</strong> in <strong>all seven areas</strong> to receive an overall Pass.</p>
+  <div class="pass-fail">
+    <div class="pf-card pass">
+      <div class="icon">&#10003;</div>
+      <h3 style="color:var(--accent-2)">Pass</h3>
+      <p style="font-size:var(--t4)">Score &ge; 4 in every domain. Feedback is constructive and highlights strengths.</p>
+    </div>
+    <div class="pf-card fail">
+      <div class="icon">&#9888;</div>
+      <h3 style="color:var(--danger)">To Be Improved</h3>
+      <p style="font-size:var(--t4)">Any domain scored &le; 3. Targeted feedback identifies areas for development.</p>
+    </div>
+  </div>
+  <div class="cta-section">
+    <p style="font-size:var(--t3);color:var(--ink-3);max-width:600px;margin:0 auto">Score 4 feedback highlights elements of a 5 that are partially achieved. No fractional scores are used. Every review is constructive, concise, and professional.</p>
+  </div>
+</div>
+</section>
+
+<script>
+(function(){
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const progress = document.getElementById('progress');
+  const pageInfo = document.getElementById('pageInfo');
+  const sectionTag = document.getElementById('section-tag');
+  let current = 0;
+
+  function goTo(idx){
+    if(idx<0) idx=0;
+    if(idx>=total) idx=total-1;
+    if(idx===current) return;
+    slides[current].classList.remove('active');
+    slides[idx].classList.add('active');
+    current=idx;
+    updateUI();
+  }
+
+  function updateUI(){
+    pageInfo.textContent = (current+1)+' / '+total;
+    progress.style.width = ((current+1)/total*100)+'%';
+    sectionTag.textContent = slides[current].getAttribute('data-section')||'';
+  }
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}
+    if(e.key==='f'||e.key==='F'){e.preventDefault();document.documentElement.requestFullscreen?.()}
+  });
+
+  document.addEventListener('click',function(e){
+    const x=e.clientX;
+    if(x>window.innerWidth*0.7) goTo(current+1);
+    else if(x<window.innerWidth*0.3) goTo(current-1);
+  });
+
+  updateUI();
+})();
+</script>
+</body>
+</html>
